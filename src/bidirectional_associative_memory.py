@@ -33,7 +33,7 @@ class BAM:
         for x, y in zip(input_vectors, output_vectors):
             self.W += self.learning_rate * np.outer(x, y)
             self.epochs += 1
-            print(f"Эпоха {self.epochs}:")
+            print(f"Эпоха {self.epochs}")
 
     def recall(self, input_data=None, output_data=None, max_iterations=100):
         if input_data is not None and output_data is None:
