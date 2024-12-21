@@ -20,14 +20,15 @@ class BAM:
         self.epochs = 0
 
     @staticmethod
-    def _activation_function(x):
+    def _activation_function(x, previous_x):
         """
         Функция активации с учетом условий:
         1, если x > 0
         -1, если x < 0
-        0, если x == 0
+        previous_x, если x == 0
         """
-        return np.where(x > 0, 1, np.where(x < 0, -1, 0))
+        result = np.where(x > 0, 1, np.where(x < 0, -1, previous_x))
+        return result
 
     def train(self, input_vectors, output_vectors):
         for x, y in zip(input_vectors, output_vectors):
@@ -37,13 +38,13 @@ class BAM:
 
     def recall(self, input_data=None, output_data=None, max_iterations=100):
         if input_data is not None and output_data is None:
-            output_data = self._activation_function(np.dot(input_data, self.W))
+            output_data = self._activation_function(np.dot(input_data, self.W), np.zeros(self.output_size))
         elif output_data is not None and input_data is None:
-            input_data = self._activation_function(np.dot(output_data, self.W.T))
+            input_data = self._activation_function(np.dot(output_data, self.W.T), np.zeros(self.input_size))
 
         for iteration in range(max_iterations):
-            new_input = self._activation_function(np.dot(output_data, self.W.T))
-            new_output = self._activation_function(np.dot(new_input, self.W))
+            new_input = self._activation_function(np.dot(output_data, self.W.T), input_data)
+            new_output = self._activation_function(np.dot(new_input, self.W), output_data)
 
             if np.array_equal(new_input, input_data) and np.array_equal(new_output, output_data):
                 break
