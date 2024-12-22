@@ -59,7 +59,6 @@ def image_beautiful_print(image, rows, cols):
     image = image.astype(np.object_)
     image[image == 1] = '⬜'
     image[image == -1] = '⬛'
-    image[image == 0] = '⬛'
     image = image.reshape(rows, cols)
     image_list = image.tolist()
     for row in image_list:
